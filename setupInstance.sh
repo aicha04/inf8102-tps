@@ -25,8 +25,8 @@ sudo apt-get update
 
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
-curl https://raw.githubusercontent.com/aicha04/inf8102-tps/main/Dockerfile > dockerfile
+curl https://raw.githubusercontent.com/aicha04/inf8102-tps/main/Dockerfile >> Dockerfile
 
-sudo docker build -t logImage .
-ImageId=$(sudo docker images "logImage*" --format "{{.ID}}")
+sudo docker build -t logimage .
+ImageId=$(sudo docker images "logimage" --format "{{.ID}}")
 sudo docker run -d --name hdpcontainter $ImageId

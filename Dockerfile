@@ -1,6 +1,6 @@
 FROM ubuntu:focal
-RUN sudo apt update -y
-RUN sudo apt install -y yum-utils
-RUN sudo apt update -y
-RUN sudo yum install -y amazon-cloudwatch-agent
+RUN apt-get update -y
+RUN apt-get install -y yum-utils
+RUN apt-get update -y
+RUN yum install -y amazon-cloudwatch-agent
 CMD /bin/bash

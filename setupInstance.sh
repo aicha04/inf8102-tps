@@ -25,7 +25,7 @@ sudo apt-get update
 
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
-curl  > dockerfile
+curl https://raw.githubusercontent.com/aicha04/inf8102-tps/main/Dockerfile > dockerfile
 
 sudo docker build -t logImage .
 ImageId=$(sudo docker images "logImage*" --format "{{.ID}}")

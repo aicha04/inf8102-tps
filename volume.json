@@ -1,0 +1,6 @@
+{
+    "DeviceName": "/dev/sdg",
+    "Ebs": {
+      "VolumeSize": 80
+    }
+}

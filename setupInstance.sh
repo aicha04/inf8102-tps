@@ -29,4 +29,4 @@ curl https://raw.githubusercontent.com/aicha04/inf8102-tps/main/Dockerfile >> Do
 
 sudo docker build -t logimage .
 ImageId=$(sudo docker images "logimage" --format "{{.ID}}")
-sudo docker run -d --name hdpcontainter $ImageId
+sudo docker run --name hdpcontainter $ImageId

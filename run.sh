@@ -1,3 +1,4 @@
+#!/bin/bash
 ECSImageId=ami-09a41e26df464c548
 SecurityGroup=sg-0b90b622bf5484b42
 

@@ -31,8 +31,14 @@ SubnetId=subnet-03fd421f03f28be62
 curl https://raw.githubusercontent.com/aicha04/inf8102-tps/main/setupInstanceAppserver.sh > setupInstance.sh
 curl https://raw.githubusercontent.com/aicha04/inf8102-tps/main/volume.json > volume.json
 
-InstanceId="$(aws ec2 run-instances --image-id $ImageId --count 1 --instance-type t2.micro --security-group-ids $SecurityGroup --subnet-id $SubnetId --key-name vockey --user-data file://setupInstance.sh --block-device-mappings file://volume.json --iam-instance-profile Arn=arn:aws:iam::512241751838:instance-profile/LabInstanceProfile,Name=LabInstanceProfile --monitoring Enabled=true --query "Instances[].[InstanceId]" --output text)"
+InstanceId="$(aws ec2 run-instances --image-id $ImageId --count 1 --instance-type t2.micro --security-group-ids $SecurityGroup --subnet-id $SubnetId --key-name vockey --user-data file://setupInstance.sh --block-device-mappings file://volume.json --iam-instance-profile Arn=arn:aws:iam::512241751838:instance-profile/LabInstanceProfile --monitoring Enabled=true --query "Instances[].[InstanceId]" --output text)"
 $InstanceId
 aws ec2 monitor-instances --instance-ids $InstanceId
 
-aws cloudwatch put-metric-alarm --alarm-name --alarm-description "Abnormal network packet traffic (potential brute-force/dos)" --metric-name NetworkPacketSln --namespace AWS/EC2 --statistic Average --period 1 --threshold 600000 --comparison-operator GreaterThanThreshold --dimensions "Name=InstanceId,Value=ami-08c40ec9ead489470" --evaluation-periods 1 --alarm-actions arn:aws:automate:ca-central-1:ec2:stop --unit Count
+aws cloudwatch put-metric-alarm --alarm-name alarm --alarm-description "Abnormal network packet traffic (potential brute-force/dos)" --metric-name NetworkPacketSln --namespace AWS/EC2 --statistic Average --period 10 --threshold 600000 --comparison-operator GreaterThanThreshold --dimensions "Name=InstanceId,Value=$InstanceId" --evaluation-periods 1 --alarm-actions arn:aws:automate:us-east-1:ec2:stop --unit Count
+ImageId=ami-017cdd6dc706848b2
+SubnetId=subnet-08452f302f532cd40
+aws ec2 run-instances --image-id $ImageId --count 1 --instance-type t2.micro --security-group-ids $SecurityGroup --subnet-id $SubnetId --key-name vockey --block-device-mappings file://volume.json --iam-instance-profile Arn=arn:aws:iam::512241751838:instance-profile/LabInstanceProfile --monitoring Enabled=true
+
+SubnetId=subnet-0408d51aa09930a44
+aws ec2 run-instances --image-id $ImageId --count 1 --instance-type t2.micro --security-group-ids $SecurityGroup --subnet-id $SubnetId --key-name vockey --block-device-mappings file://volume.json --iam-instance-profile Arn=arn:aws:iam::512241751838:instance-profile/LabInstanceProfile --monitoring Enabled=true

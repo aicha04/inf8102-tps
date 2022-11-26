@@ -24,7 +24,7 @@
                 ]
                 },
                 "ReplicationConfiguration":{
-                    "Role": "IAM-role-ARN",
+                    "Role": {"Fn::Join": ["", ["arn:aws:iam::124922189137:role/", {"Ref":"BucketRole"}] ]} ,
                     "Rules": [
                         {
                             "Status": "Enabled",
@@ -137,9 +137,62 @@
                     ]
                 },
                 "PolicyName": "BucketBackupPolicy",
-                "Roles": ["BucketRole"]
+                "Roles": [{"Ref":"BucketRole"}]
+            }
+        },
+        "CloudTrailBucket": {
+            "Type" : "AWS::CloudTrail::Trail",
+            "Properties" : {
+                "IsMultiRegionTrail" : false,
+                "IsLogging": true,
+                "EventSelectors" : [ {
+                    "DataResources" : [ 
+                        {
+                            "Type" : "AWS::S3::Object",
+                            "Values" : [{"Fn::Join": ["", ["arn:aws:s3:::", {"Ref":"S3Bucket"}] ]}]
+                        }
+                    ],
+                    "IncludeManagementEvents" : true,
+                    "ReadWriteType" : "WriteOnly"
+                  }
+                   ],
+                "S3BucketName" : {"Ref": "S3Bucket"},
+                "TrailName" : "CloudTrailBucket"
+            }
+        },
+        "CloudTraileBucketPolicy":{
+            "DependsOn":[{"Ref":"S3Bucket"}],
+            "Type": "AWS::S3::BucketPolicy",
+            "Properties":{
+                "Bucket": {"Ref": "S3Bucket"},
+                "PolicyDocument":
+                {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Sid": "AWSCloudTrailAclCheck",
+                            "Effect": "Allow",
+                            "Principal": {"Service": "cloudtrail.amazonaws.com"},
+                            "Action": "s3:GetBucketAcl",
+                            "Resource": {"Fn::Join": ["", ["arn:aws:s3:::", {"Ref":"S3Bucket"}] ]}
+                        },
+                        {
+                            "Sid": "AWSCloudTrailWrite",
+                            "Effect": "Allow",
+                            "Principal": {"Service": "cloudtrail.amazonaws.com"},
+                            "Action": "s3:PutObject",
+                            "Resource": {"Fn::Join": ["", ["arn:aws:s3:::", {"Ref":"S3Bucket"}, "/AWSLogs/124922189137/*"] ]},
+                            "Condition": {
+                                "StringEquals": {
+                                    "s3:x-amz-acl": "bucket-owner-full-control"
+                                }
+                            }
+                        }
+                    ]
+                }
             }
         }
+        
     }
 
 }

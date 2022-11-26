@@ -11,7 +11,7 @@
                 "AvailabilityZone":"us-east-1a",
                 "SecurityGroupIds":["sg-03653df4a7cd977d8"],
                 "SubnetId": "subnet-056df5ed7c06735fa",
-                "IamInstanceProfile": "LabRole",
+                "IamInstanceProfile": "LabInstanceProfile",
                 "Monitoring": true,
                 "BlockDeviceMappings": [
                     {
@@ -57,7 +57,7 @@
                 "AvailabilityZone":"us-east-1b",
                 "SecurityGroupIds":["sg-03653df4a7cd977d8"],
                 "SubnetId": "subnet-0428584ba99a7215b",
-                "IamInstanceProfile": "LabRole",
+                "IamInstanceProfile": "LabInstanceProfile",
                 "Monitoring": true,
                 "BlockDeviceMappings": [
                     {
@@ -103,7 +103,7 @@
                 "AvailabilityZone":"us-east-1a",
                 "SecurityGroupIds":["sg-03653df4a7cd977d8"],
                 "SubnetId": "subnet-00704c60475e69fa5",
-                "IamInstanceProfile": "LabRole",
+                "IamInstanceProfile": "LabInstanceProfile",
                 "Monitoring": true,
                 "BlockDeviceMappings": [
                     {
@@ -149,7 +149,7 @@
                 "AvailabilityZone":"us-east-1b",
                 "SecurityGroupIds":["sg-03653df4a7cd977d8"],
                 "SubnetId": "subnet-0928657253f979123",
-                "IamInstanceProfile": "LabRole",
+                "IamInstanceProfile": "LabInstanceProfile",
                 "Monitoring": true,
                 "BlockDeviceMappings": [
                     {

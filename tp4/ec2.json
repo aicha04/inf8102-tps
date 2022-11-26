@@ -1,0 +1,194 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Deploy a secure EC2 instance on the public subnet of AZ1 ",
+    "Resources":{
+        "EC2Intance": {
+            "Type":"AWS::EC2::Instance",
+            "Properties":{
+                "KeyName":"vockey",
+                "InstanceType": "t2.micro",
+                "ImageId":"ami-08c40ec9ead489470",
+                "AvailabilityZone":"us-east-1a",
+                "SecurityGroupIds":["sg-03653df4a7cd977d8"],
+                "SubnetId": "subnet-056df5ed7c06735fa",
+                "IamInstanceProfile": "LabRole",
+                "Monitoring": true,
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs":{
+                            "DeleteOnTermination":"false",
+                            "VolumeSize": "80"
+                        }
+                    }
+                ]
+
+            }
+        },
+        "CloudWatchAlarm": {
+            "Type" : "AWS::CloudWatch::Alarm",
+            "Properties" : {
+                "ActionsEnabled" : true,
+                "AlarmActions" : [ "arn:aws:automate:us-east-1:ec2:stop" ],
+                "AlarmDescription" : "stop when ingress the ingress number of packets to the instance is greater than 1000pkts per second",
+                "AlarmName" : "alarm",
+                "ComparisonOperator" : "GreaterThanThreshold",
+                "Dimensions" : [ 
+                    {
+                        "Name":"InstanceId",
+                        "Value": {"Ref": "EC2Intance" }
+                    }
+                ],
+                "EvaluationPeriods" : 1,
+                "MetricName" : "NetworkPacketSln",
+                "Namespace" : "AWS/EC2",
+                "Period" : 10,
+                "Statistic" : "Average",
+                "Threshold" : 600000,
+                "Unit" : "Count"
+            }
+        },
+        "EC2Intance2": {
+            "Type":"AWS::EC2::Instance",
+            "Properties":{
+                "KeyName":"vockey",
+                "InstanceType": "t2.micro",
+                "ImageId":"ami-08c40ec9ead489470",
+                "AvailabilityZone":"us-east-1b",
+                "SecurityGroupIds":["sg-03653df4a7cd977d8"],
+                "SubnetId": "subnet-0428584ba99a7215b",
+                "IamInstanceProfile": "LabRole",
+                "Monitoring": true,
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs":{
+                            "DeleteOnTermination":"false",
+                            "VolumeSize": "80"
+                        }
+                    }
+                ]
+
+            }
+        },
+        "CloudWatchAlarm2": {
+            "Type" : "AWS::CloudWatch::Alarm",
+            "Properties" : {
+                "ActionsEnabled" : true,
+                "AlarmActions" : [ "arn:aws:automate:us-east-1:ec2:stop" ],
+                "AlarmDescription" : "stop when ingress the ingress number of packets to the instance is greater than 1000pkts per second",
+                "AlarmName" : "alarm2",
+                "ComparisonOperator" : "GreaterThanThreshold",
+                "Dimensions" : [ 
+                    {
+                        "Name":"InstanceId",
+                        "Value": {"Ref": "EC2Intance2" }
+                    }
+                ],
+                "EvaluationPeriods" : 1,
+                "MetricName" : "NetworkPacketSln2",
+                "Namespace" : "AWS/EC2",
+                "Period" : 10,
+                "Statistic" : "Average",
+                "Threshold" : 600000,
+                "Unit" : "Count"
+            }
+        },
+        "EC2Intance3": {
+            "Type":"AWS::EC2::Instance",
+            "Properties":{
+                "KeyName":"vockey",
+                "InstanceType": "t2.micro",
+                "ImageId":"ami-08c40ec9ead489470",
+                "AvailabilityZone":"us-east-1a",
+                "SecurityGroupIds":["sg-03653df4a7cd977d8"],
+                "SubnetId": "subnet-00704c60475e69fa5",
+                "IamInstanceProfile": "LabRole",
+                "Monitoring": true,
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs":{
+                            "DeleteOnTermination":"false",
+                            "VolumeSize": "80"
+                        }
+                    }
+                ]
+
+            }
+        },
+        "CloudWatchAlarm3": {
+            "Type" : "AWS::CloudWatch::Alarm",
+            "Properties" : {
+                "ActionsEnabled" : true,
+                "AlarmActions" : [ "arn:aws:automate:us-east-1:ec2:stop" ],
+                "AlarmDescription" : "stop when ingress the ingress number of packets to the instance is greater than 1000pkts per second",
+                "AlarmName" : "alarm3",
+                "ComparisonOperator" : "GreaterThanThreshold",
+                "Dimensions" : [ 
+                    {
+                        "Name":"InstanceId",
+                        "Value": {"Ref": "EC2Intance3" }
+                    }
+                ],
+                "EvaluationPeriods" : 1,
+                "MetricName" : "NetworkPacketSln3",
+                "Namespace" : "AWS/EC2",
+                "Period" : 10,
+                "Statistic" : "Average",
+                "Threshold" : 600000,
+                "Unit" : "Count"
+            }
+        },
+        "EC2Intance4": {
+            "Type":"AWS::EC2::Instance",
+            "Properties":{
+                "KeyName":"vockey",
+                "InstanceType": "t2.micro",
+                "ImageId":"ami-08c40ec9ead489470",
+                "AvailabilityZone":"us-east-1b",
+                "SecurityGroupIds":["sg-03653df4a7cd977d8"],
+                "SubnetId": "subnet-0928657253f979123",
+                "IamInstanceProfile": "LabRole",
+                "Monitoring": true,
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs":{
+                            "DeleteOnTermination":"false",
+                            "VolumeSize": "80"
+                        }
+                    }
+                ]
+
+            }
+        },
+        "CloudWatchAlarm4": {
+            "Type" : "AWS::CloudWatch::Alarm",
+            "Properties" : {
+                "ActionsEnabled" : true,
+                "AlarmActions" : [ "arn:aws:automate:us-east-1:ec2:stop" ],
+                "AlarmDescription" : "stop when ingress the ingress number of packets to the instance is greater than 1000pkts per second",
+                "AlarmName" : "alarm4",
+                "ComparisonOperator" : "GreaterThanThreshold",
+                "Dimensions" : [ 
+                    {
+                        "Name":"InstanceId",
+                        "Value": {"Ref": "EC2Intance4" }
+                    }
+                ],
+                "EvaluationPeriods" : 1,
+                "MetricName" : "NetworkPacketSln4",
+                "Namespace" : "AWS/EC2",
+                "Period" : 10,
+                "Statistic" : "Average",
+                "Threshold" : 600000,
+                "Unit" : "Count"
+            }
+        }
+
+          
+          
+    }
+
+}

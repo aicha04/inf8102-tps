@@ -1,0 +1,145 @@
+{
+    "Description": "This template creates an Amazon S3 Bucket.",
+    "Outputs": {
+        "BucketName": {
+            "Description": "Bucket Created! ",
+            "Value": {
+                "Ref": "S3Bucket"
+            }
+        }
+    },
+    "Resources": {
+        "S3Bucket": {
+            "DeletionPolicy": "Retain",
+            "Properties": {
+                "AccessControl": "Private",
+                "BucketEncryption": {
+                "ServerSideEncryptionConfiguration": [
+                    {
+                        "ServerSideEncryptionByDefault": {
+                            "KMSMasterKeyID": "arn:aws:kms:us-east-1:512241751838:key/b6407101-bedb-409b-b7c9-59832cd2dc63",
+                            "SSEAlgorithm": "aws:kms"
+                        }
+                    }
+                ]
+                },
+                "ReplicationConfiguration":{
+                    "Role": "IAM-role-ARN",
+                    "Rules": [
+                        {
+                            "Status": "Enabled",
+                            "Priority": 1,
+                            "DeleteMarkerReplication": { "Status": "Disabled" },
+                            "Filter" : { "Prefix": "Tax"},
+                            "Destination": {
+                                "Bucket": {"Fn::Join": ["", ["arn:aws:s3:::", {"Ref":"S3BucketBack"}] ]} 
+                            }
+                        }
+                    ]
+
+                },
+                "PublicAccessBlockConfiguration": {
+                    "BlockPublicAcls": true,
+                    "BlockPublicPolicy": true,
+                    "IgnorePublicAcls": true,
+                    "RestrictPublicBuckets": true
+                },
+                "VersioningConfiguration": {
+                    "Status": "Enabled"
+                }
+            },
+            "Type": "AWS::S3::Bucket"
+        },
+        "S3BucketBack": {
+            "DeletionPolicy": "Retain",
+            "Properties": {
+                "AccessControl": "Private",
+                "BucketEncryption": {
+                    "ServerSideEncryptionConfiguration": [
+                        {
+                            "ServerSideEncryptionByDefault": {
+                                "KMSMasterKeyID": "arn:aws:kms:us-east-1:512241751838:key/b6407101-bedb-409b-b7c9-59832cd2dc63",
+                                "SSEAlgorithm": "aws:kms"
+                            }
+                        }
+                    ]
+                },
+                "PublicAccessBlockConfiguration": {
+                    "BlockPublicAcls": true,
+                    "BlockPublicPolicy": true,
+                    "IgnorePublicAcls": true,
+                    "RestrictPublicBuckets": true
+                },
+                "VersioningConfiguration": {
+                    "Status": "Enabled"
+                }
+            },
+            "Type": "AWS::S3::Bucket"
+        },
+        "BucketRole":{
+            "Type" : "AWS::IAM::Role",
+            "Properties" : {
+                "AssumeRolePolicyDocument" : 
+                {
+                    "Version":"2012-10-17",
+                    "Statement":[
+                       {
+                          "Effect":"Allow",
+                          "Principal":{
+                             "Service":"s3.amazonaws.com"
+                          },
+                          "Action":"sts:AssumeRole"
+                       }
+                    ]
+                },
+                
+                "RoleName" : "BucketRole"
+              }
+        },
+          
+        "BucketBackupPolicy": {
+            "Type": "AWS::IAM::Policy",
+            "Properties": {
+                "PolicyDocument": {
+                    "Version":"2012-10-17",
+                    "Statement":[
+                        {
+                            "Effect":"Allow",
+                            "Action":[
+                                "s3:GetObjectVersionForReplication",
+                                "s3:GetObjectVersionAcl",
+                                "s3:GetObjectVersionTagging"
+                            ],
+                            "Resource":[
+                                {"Fn::Join": ["", ["arn:aws:s3:::", {"Ref":"S3Bucket"},"/*"] ]}
+                            ]
+                        },
+                        {
+                            "Effect":"Allow",
+                            "Action":[
+                                "s3:ListBucket",
+                                "s3:GetReplicationConfiguration"
+                            ],
+                            "Resource":[
+                                {"Fn::Join": ["", ["arn:aws:s3:::", {"Ref":"S3Bucket"}] ]}
+                            ]
+                        },
+                        {
+                            "Effect":"Allow",
+                            "Action":[
+                                "s3:ReplicateObject",
+                                "s3:ReplicateDelete",
+                                "s3:ReplicateTags"
+                            ],
+                            "Resource": {"Fn::Join": ["", ["arn:aws:s3:::", {"Ref":"S3BucketBack"}, "/*"] ]}
+
+                        }
+                    ]
+                },
+                "PolicyName": "BucketBackupPolicy",
+                "Roles": ["BucketRole"]
+            }
+        }
+    }
+
+}

@@ -144,7 +144,7 @@
             "Type" : "AWS::CloudTrail::Trail",
             "Properties" : {
                 "IsMultiRegionTrail" : false,
-                "IsLogging": true,
+                "IsLogging": false,
                 "EventSelectors" : [ {
                     "DataResources" : [ 
                         {
@@ -152,7 +152,7 @@
                             "Values" : [{"Fn::Join": ["", ["arn:aws:s3:::", {"Ref":"S3Bucket"}] ]}]
                         }
                     ],
-                    "IncludeManagementEvents" : true,
+                    "IncludeManagementEvents" : false,
                     "ReadWriteType" : "WriteOnly"
                   }
                    ],
